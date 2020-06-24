@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        window.onload=function(){
+
+
+
+            const res={}
+            let a =["s","s","a"]
+            for (const key in a) {
+                if (a.hasOwnProperty(key)) {
+                    const element = a[key];
+                    console.log(element,key,"forin")
+                }
+            }
+            for (const iterator of a) {
+                console.log(iterator,"forof")
+            }
+            a.forEach((key)=>{
+                console.log(key,a[key],'foreach')
+            if(res[key]){
+
+            res[key]++
+
+            }else{
+
+            res[key]=1
+
+            }
+
+            })
+
+            console.log(res)
+
+
+
+            var aa = [ 'A' , 'B', 'C' ]
+
+                aa.name = ' Hello ' ;
+
+                for (var  i   in  aa ){
+
+                console.log ( aa[i] ,'ss')        //   '0' , '1' , '2' , 'name'
+
+                }
+
+                var c=new Map(['1','x'],['2','y'],['3','z']);  
+                console.log(c,'c')
+                // for(var i of c){
+                //     console.log (i[0]+"="+i[i]);//既可以拿到键也可以拿到值
+                // }
+            // async function test(){
+            //     return 'html'
+            // }
+            // const res=test()
+            // res.then((r)=>{
+
+            //     console.log(r)
+            // })
+            // function g(){
+            //     return 'h1'
+            // }
+            // async function g1(){
+            //     return Promise.resolve("h2")
+            // }
+            // async function test(){
+            //     const a=await g();
+            //     const b= await g1();
+            //     console.log(a,b)
+            // }
+            // test()
+            // function t(n){
+            //     return new Promise(resolve =>{
+            //         setTimeout(()=>{
+            //             resolve(n+200)
+            //         },n)
+            //     })
+            // }
+            // function s1(n){
+            //     console.log(`step1 with ${n}`)
+            //     return t(n)
+            // }
+            // function s2(n){
+            //     console.log(`step2 with ${n}`)
+            //     return t(n)
+            // }
+            // function s3(n){
+            //     console.log(`step3 with ${n}`)
+            //     return t(n)
+            // }
+            // // t().then((v)=>{
+            // //     console.log(v)
+            // // })
+            // // async function test(n){
+            // //     const b= await t(n)
+            // //     console.log(b)
+            // // }
+            // async function dot(){
+            //     console.time('dot')
+            //     const time1=300
+
+            //     // s1(time1)
+            //     // .then(time2=>s2(time2))
+            //     // .then(time3=>s3(time3))
+            //     // .then(res=>{
+            //     //     console.log(`res is ${res}`);
+            //     //     console.timeEnd('dot')
+            //     // })
+            //     const time2 =await s1(time1)
+            //     const time3 =await s2(time2)
+            //     const res =await s3(time3)
+            //     console.log(`res is ${res}`)
+            //     console.timeEnd('dot')
+            // }
+            // dot(1000)
+
+
+            function ajax(url){
+
+            new Promise(function(resolve, reject) {
+                resolve(1);
+            })
+            .then(function(res) {
+                return new Promise(function(resolve, reject) {
+                    resolve(res+1);
+                });
+            })
+            .then(function(res) {
+                return new Promise(function(resolve, reject) {
+                    resolve(res+1);
+                });
+            })
+            .then(function(res) {
+                console.log(res,"结果");
+            })
+
+
+
+        ajax(url,{参数},(res)=>{
+            return new Promise(
+                (resolve,reject)=>{
+                    if(res.status == "200"){
+                        resolve("下载成功")
+                    }else{
+                        reject("下载失败")
+                    }
+                }
+            )
+
+         })
+            ajax(url,{}).then((res)=>{
+                console.log(res)//下载成功
+            })
+            .catch((res)=>{
+                console.log(res)//下载失败
+            })
+
+            
+
+
+
+                return new Promise((resolve, reject)=>{
+                    if(url==1){
+                        try{
+                            resolve (JSON.parse(url))
+                        } catch (e){
+                            reject(e)
+
+                        }
+                    }
+                })
+            }
+            let wake=(time)=>{
+                return new Promise((resolve, reject)=>{
+                    setTimeout(()=>{
+                        resolve(`${time/1000}秒后出来`)
+                    },time)
+                })
+            }
+
+            let p1=wake(1000)
+            let p2=wake(3000)
+            Promise.all([p1,p2]).then((res)=>{
+                console.log(res)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+
+            ajax(1).then(
+                res =>{
+                    console.log(res)
+                }
+            )
+            .catch(err =>{
+                console.log(err)
+            })
+            ajax(1)
+
+
+           function nvm(num){
+               return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    resolve(num*2)
+                },2000)
+               })
+            }
+
+            function nvm2(num){
+               return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    resolve(num*2)
+                },5000)
+               })
+            }
+
+            async function timi(res){
+                let a=await nvm(2)
+                let b=await nvm2(2)
+                let c=await nvm(2)
+                console.log(a,b,c)
+            }
+            console.log(timi())
+           
+            async function timi2(res){
+                return "sss"
+            }
+            console.log(timi2())//打印出来promise对象Promise {<resolved>: "sss"}
+                                // __proto__: Promise
+                                // [[PromiseStatus]]: "resolved"
+                                // [[PromiseValue]]: "sss"
+            timi2().then((res)=>{
+                console.log(res) //打印出sss     
+            })
+        }
+    </script>
+</body>
+</html>
