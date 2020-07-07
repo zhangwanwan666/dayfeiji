@@ -109,8 +109,8 @@ class Shop extends Component {
       longitude: this.props.geohash[1]
     };
     let res = await API.shopDetails(id, obj);
-    let menu = await API.getfoodMenu({restaurant_id: id})
-    menu = this.setNumOfMenu(menu)
+    let menu = await API.getfoodMenu({restaurant_id: id})||[]
+    menu = this.setNumOfMenu(menu)||[]
     let foodList = this.setFoodList(menu)
     this.setState({
       shopDetailData: res,
@@ -273,8 +273,8 @@ class Shop extends Component {
                                                   {
                                                     food.attributes.map((attribute, fIndex) => {
                                                       return (
-                                                        <li key={fIndex}  className={attribute.icon_name==='新'?'attribute-new':''}>
-                                                          <p>{attribute.icon_name}</p>
+                                                        <li key={fIndex}  className={attribute&&attribute.icon_name==='新'?'attribute-new':''}>
+                                                          <p>{attribute&&attribute.icon_name}</p>
                                                         </li>
                                                       )
                                                     })

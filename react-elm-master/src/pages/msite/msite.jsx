@@ -10,19 +10,22 @@ import API from "../../api/api";
 import { is, fromJS } from 'immutable';  // 保证数据的不可变
 import Swiper from "swiper/dist/js/swiper.js";
 import "swiper/dist/css/swiper.css";
-import {saveAttrInfo} from '@/store/action'
+import {saveAttrInfo, t1} from '@/store/action'
 import PropTypes from 'prop-types'
 
 class Msite extends Component {
   static propTypes = {
     saveAttrInfo: PropTypes.func.isRequired,
+    t1:PropTypes.func.isRequired,
+    test: PropTypes.string,
   };
   state = {
     geohash: [],
     footTypes: [],
     title: '',
     text: 'fff',
-    imgBaseUrl: "https://fuss10.elemecdn.com"
+    imgBaseUrl: "https://fuss10.elemecdn.com",
+    test:''
   };
   getFoodTypes = async () => {
     let data = {
@@ -68,8 +71,8 @@ class Msite extends Component {
     this.setState({
       geohash: [res.latitude, res.longitude]
     });
-    this.props.saveAttrInfo('geohash', [res.latitude, res.longitude])
-    this.getPoisSite([res.latitude, res.longitude])
+    // this.props.saveAttrInfo('geohash', [res.latitude, res.longitude]);
+    this.getPoisSite([res.latitude, res.longitude]);
     this.getFoodTypes();
   }
   goHome = () => {
@@ -81,6 +84,11 @@ class Msite extends Component {
   shouldComponentUpdate(nextProps, nextState) {   // 判断是否要更新render, return true 更新  return false不更新
     let refresh = !is(fromJS(this.props), fromJS(nextProps)) || !is(fromJS(this.state),fromJS(nextState))
     return refresh
+  }
+
+  test=()=>{
+    this.props.t1("key","value")
+    console.log(this.props.test,"this.props.test")
   }
   render() {
     return (
@@ -126,7 +134,9 @@ class Msite extends Component {
         <div className="shop-list-container">
           <header className="shop-header">
             <div className="icon-shangdian" />
-            <span className="shop-header-title">附近商家</span>
+            <div className="shop-header-title">
+              <button onClick={this.test.bind(this)}>
+              附近商家 </button></div>
           </header>
           {this.state.footTypes.length?<ShopList geohash={this.state.geohash}/>:
             <div className="skeleton">
@@ -155,9 +165,16 @@ class Msite extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    saveAttrInfo: (attr, geohash) => dispatch(saveAttrInfo(attr, geohash))
+    test: state.test,
   }
 }
-export default connect(()=>({}), mapDispatchToProps)(Msite)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveAttrInfo: (attr, geohash) => dispatch(saveAttrInfo(attr, geohash)),
+    t1: (key,value)=> dispatch(t1(key,value))
+  }
+}
+export default connect(()=>({}), mapDispatchToProps,mapStateToProps)(Msite)

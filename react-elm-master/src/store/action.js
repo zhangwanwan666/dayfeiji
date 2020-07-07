@@ -26,3 +26,12 @@ export const modifyUserInfo = (key, value) => {
   }
 }
 
+//测试
+export const t1=(key, value)=>{
+  return {
+    type: user.TEST,
+    key,
+    value
+  }
+}
+
